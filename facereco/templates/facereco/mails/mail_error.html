@@ -1,0 +1,17 @@
+<div style="width: 80%;
+        margin: 0 auto;
+        background-color: #fff;
+	    border-radius: 5px;
+	    padding: 1rem;
+	    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);">
+    <p>Bonjour {{demand.first_name}},</p>
+    <p>Une erreur s'est produite lors de ta demande d'identification sur les photos de {{demand.directory.name}}.</p>
+    {% if error_message == "No face found" %}
+        <p>Nous n'avons détecté aucun visage sur la photo que tu as fournie.</p>
+
+    {% else %}
+        <p>Une erreur inconnue s'est produite.</p>
+    {% endif %}
+    <br/>
+        <p>Tu peux recommencer en cliquant sur le lient suivant: <a href="{% url 'index' %}">TTSG</a></p>
+</div>

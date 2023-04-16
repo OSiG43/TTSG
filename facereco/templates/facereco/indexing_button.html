@@ -1,0 +1,110 @@
+<style>
+    .index-action {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .indexing_error {
+        color:red;
+        margin: 0;
+        font-size: 1.3em;
+        display: none;
+    }
+
+</style>
+<div class="index-action">
+
+    <span class="indexing_error" id="indexing_error_{{directory.id}}" >Error !</span>
+    {% if directory.indexing_status != 'INDEXING' %}
+        <button
+                class="button"
+                onclick="indexFiles_{{directory.id}}(event)"
+                {% if directory.id is None %} disabled {% endif %}
+        >
+            Index files
+        </button>
+    {% endif %}
+        <span id="indexing_progress_{{directory.id}}" style="display:none;">Indexing...</span>
+</div>
+
+<!-- Si on est dans un ajout alors directory.id est none. pas d'indexation possible -->
+{% if directory.id is not None %}
+    <script>
+
+        // Fonction qui lance l'indexation des photos du répertoire
+        function indexFiles_{{directory.id}}(event) {
+            event.preventDefault();
+
+
+            document.getElementById('indexing_error_{{directory.id}}').style.display = 'none';
+
+            const xhttp = new XMLHttpRequest();
+
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    event.target.style.display = 'none';
+                    document.getElementById('indexing_progress_{{directory.id}}').style.display = 'block';
+                    registerProgressObserver_{{directory.id}}();
+                }
+            };
+
+            xhttp.open("GET", "{% url 'indexingDirectory' directory_id=directory.id %}", true);
+            xhttp.send();
+        }
+
+        // Fonction qui enregistre un observateur qui va vérifier l'avancement de l'indexation
+        function registerProgressObserver_{{directory.id}}(){
+
+            window.setInterval(function(){
+
+                const xhttp = new XMLHttpRequest();
+
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+
+                        const response = JSON.parse(this.responseText);
+
+                        if (response.status == 'INDEXED') {
+
+                            window.location.reload();
+
+                        }else if (response.status == 'INDEXING') {
+
+                            progress = (response.indexed_photos / response.total_photos * 100).toFixed(2);
+                            document.getElementById('indexing_progress_{{directory.id}}').innerHTML = 'Indexing... ' + progress + '%';
+
+                        }else if (response.status == 'ERROR') {
+
+                            window.location.reload();
+
+                        }
+                    }
+                };
+
+                xhttp.open("GET", "{% url 'indexingDirectoryProgress' directory_id=directory.id %}", true);
+                xhttp.send();
+
+            }, 5000);
+
+        }
+
+        // Si le répertoire est déjà en cours d'indexation, on affiche le pourcentage d'avancement
+        {% if directory.indexing_status == 'INDEXING' %}
+
+            document.getElementById('indexing_progress_{{directory.id}}').style.display = 'block';
+            progress = ({{directory.indexed_photos}} / {{directory.total_photos}} * 100).toFixed(2);
+            document.getElementById('indexing_progress_{{directory.id}}').innerHTML = 'Indexing... ' + progress + '%';
+
+            registerProgressObserver_{{directory.id}}();
+
+        {% endif %}
+
+        // Si l'indexation a échoué, on affiche un message d'erreur
+        {% if directory.indexing_status == 'ERROR' %}
+            document.getElementById('indexing_error_{{directory.id}}').style.display = 'block';
+        {% endif %}
+
+    </script>
+{% endif %}

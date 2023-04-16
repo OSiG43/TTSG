@@ -1,0 +1,30 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Page d'accueil</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<!-- inclure le fichier CSS pour le style du site -->
+	<link rel="stylesheet" href="{% static 'facereco/style.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet">
+</head>
+<body>
+	<h1>Demande de reconnaissance faciale</h1>
+	<div class="container">
+
+		<!-- inclure le formulaire de demande -->
+		{% if success %}
+			<p class="alert alert-success">Votre demande a bien été envoyée</p>
+		{% else %}
+
+			<form method="post" enctype="multipart/form-data">
+				{% csrf_token %}
+				{{ form }}
+				<input type="submit" value="Envoyer la demande">
+			</form>
+		{% endif %}
+	</div>
+</body>
+</html>
+

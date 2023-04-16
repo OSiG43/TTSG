@@ -1,0 +1,192 @@
+/* Utilisation de variables CSS pour une gestion plus facile des couleurs */
+:root {
+	--primary-color: #007bff;
+	--secondary-color: #6c757d;
+	--background-color: #f8f9fa;
+	--font-family: 'Roboto', sans-serif;
+}
+
+body {
+	background-color: var(--background-color);
+	font-family: var(--font-family);
+	margin: 0;
+	padding: 0;
+}
+
+.container {
+	max-width: 600px;
+	margin: 0 auto;
+	border-radius: 5px;
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+    padding: 2vw;
+}
+
+h1 {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 1rem;
+	margin-bottom: 2rem;
+	text-align: center;
+	color: var(--primary-color);
+}
+
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 5px;
+}
+
+.errorlist {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    list-style: none;
+}
+
+
+form .alert{
+	background-color: #fff;
+	border-radius: 5px;
+	padding: 2rem;
+	box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+label {
+	display: block;
+	font-size: 1.1rem;
+	font-weight: 500;
+	margin-bottom: 0.5rem;
+}
+
+input[type="text"],
+input[type="email"],
+select {
+	background-color: #fff;
+	border: 1px solid var(--secondary-color);
+	border-radius: 5px;
+	color: #495057;
+	display: block;
+	font-size: 1rem;
+	margin-bottom: 1rem;
+	padding: 0.5rem;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+select {
+	appearance: none;
+	background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+	background-position: right 0.5rem center;
+	background-repeat: no-repeat;
+	background-size: 1.5rem;
+	padding-right: 2.5rem;
+}
+
+input[type="submit"] {
+    width: 100%;
+	background-color: var(--primary-color);
+	border: none;
+	border-radius: 5px;
+	color: #fff;
+	cursor: pointer;
+	font-size: 1.2rem;
+	font-weight: 500;
+	padding: 0.8rem 1.5rem;
+	transition: background-color 0.2s ease-in-out;
+}
+
+input[type="submit"]:hover {
+	background-color: #0069d9;
+}
+
+input[type="file"] {
+  background-color: #fff;
+  border: 1px solid var(--secondary-color);
+  border-radius: 5px;
+  color: #495057;
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input[type="file"]:focus {
+  outline: none;
+  box-shadow: 0 0 5px var(--primary-color);
+
+}
+
+input[type="file"]::-webkit-file-upload-button {
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: 500;
+  padding: 0.8rem 1.5rem;
+  transition: background-color 0.2s ease-in-out;
+}
+
+input[type="file"]::-webkit-file-upload-button:hover {
+  background-color: #0069d9;
+}
+
+
+/* Media queries pour rendre la page responsive */
+@media (max-width: 768px) {
+	.container {
+		max-width: 90%;
+	}
+
+	h1 {
+		font-size: 2rem;
+		margin-bottom: 1rem;
+	}
+
+	form {
+		padding: 1.5rem;
+	}
+
+	input[type="submit"] {
+		font-size: 1rem;
+		padding: 0.6rem 1rem;
+	}
+}
+
+@media (max-width: 576px) {
+	h1 {
+		font-size: 1.8rem;
+		margin-top: 0.5rem;
+		margin-bottom: 1rem;
+	}
+
+	form {
+		padding: 1rem;
+	}
+
+	input[type="submit"] {
+		font-size: 1rem;
+		padding: 0.5rem 0.8rem;
+	}
+
+	label {
+		font-size: 1rem;
+	}
+
+	select {
+		font-size: 1rem;
+		padding: 0.4rem 1rem;
+		background-size: 1.2rem;
+	}
+}

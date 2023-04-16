@@ -1,0 +1,12 @@
+{% autoescape off %}
+
+Bonjour {{demand.first_name}},
+Une erreur s'est produite lors de ta demande d'identification sur les photos de {{demand.directory.name}}.
+{% if error_message == "No face found" %}
+    Nous n'avons détecté aucun visage sur la photo que tu as fournie.
+{% else %}
+    Une erreur inconnue s'est produite.
+{% endif %}
+Tu peux recommencer en cliquant sur le lient suivant: {% url 'index' %}
+
+{% endautoescape %}

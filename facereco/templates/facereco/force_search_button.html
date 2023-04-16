@@ -1,0 +1,75 @@
+<style>
+    .force-search-action {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .force_searching_error {
+        color:red;
+        margin: 0;
+        font-size: 1.3em;
+        display: none;
+    }
+
+
+</style>
+<div class="force-search-action">
+
+        <span class="force_searching_error" id="force_searching_error_{{directory.id}}" >Error !</span>
+    {% if not already_searching %}
+        <button
+                class="button"
+                onclick="forceSearch_{{directory.id}}(event)"
+                {% if directory.id is None %} disabled {% endif %}
+        >
+            Forcer la recherche
+        </button>
+    {% endif %}
+        <span id="already_searching_{{directory.id}}" style="display:none;">En cours</span>
+</div>
+
+<!-- Si on est dans un ajout alors directory.id est none. pas d'indexation possible -->
+{% if directory.id is not None %}
+    <script>
+
+        // Fonction qui lance la recherche des photos du répertoire
+        function forceSearch_{{directory.id}}(event) {
+            event.preventDefault();
+
+            document.getElementById('force_searching_error_{{directory.id}}').style.display = 'none';
+
+
+            const xhttp = new XMLHttpRequest();
+
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    const response = JSON.parse(this.responseText);
+                    if (response.status == "STARTED"){
+                        event.target.style.display = 'none';
+                        document.getElementById('already_searching_{{directory.id}}').style.display = 'block';
+                    } else if (response.status == "NOTHING_TO_SEARCH"){
+                        document.getElementById('force_searching_error_{{directory.id}}').style.display = 'block';
+                        document.getElementById('force_searching_error_{{directory.id}}').innerHTML = "Rien à rechercher";
+                    } else if (response.status == "ERROR"){
+                        document.getElementById('force_searching_error_{{directory.id}}').style.display = 'block';
+                        document.getElementById('force_searching_error_{{directory.id}}').innerHTML = "Erreur";
+                    }
+
+                }
+            };
+
+            xhttp.open("GET", "{% url 'forceSearching' directory_id=directory.id %}", true);
+            xhttp.send();
+        }
+
+
+
+        // Si une recherche est déjà en cours, on affiche le message
+        {% if  already_searching %}
+            document.getElementById('already_searching_{{directory.id}}').style.display = 'block';
+        {% endif %}
+
+    </script>
+{% endif %}
