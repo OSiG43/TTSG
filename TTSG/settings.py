@@ -31,6 +31,7 @@ SECRET_KEY = getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = getenv("DEBUG", "False") == "True"
+PROD = getenv("PROD", "False") == "True"
 
 BASE_URL = getenv("BASE_URL", "http://localhost:8000")
 
@@ -132,7 +133,7 @@ USE_TZ = True
 STATIC_URL = "static/"
 
 
-if not DEBUG:
+if PROD:
     STATIC_ROOT = BASE_DIR / "static"
 else:
     STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
