@@ -17,9 +17,9 @@ class DemandAdmin(admin.ModelAdmin):
         if self.obj.id is None:
             return ""
         if self.obj.photo is None:
-            return ""
+            return "No photo to encode"
         if self.obj.processing_status != Demand.NOT_PROCESSED or self.obj.processing_status != Demand.NO_FACE_FOUND:
-            return ""
+            return "Photo already processed"
         return render_to_string('facereco/force_face_encode_button.html', {'demand': obj})
 
     rerunEncoding_button.short_description = 'Rerun face encoding'
