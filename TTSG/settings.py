@@ -92,11 +92,28 @@ WSGI_APPLICATION = "TTSG.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+DB_TYPE = getenv("DB_TYPE", "sqlite")
+
+if DB_TYPE == "postgres":
+    DB_ENGINE = "django.db.backends.postgresql_psycopg2"
+    DB_NAME = getenv("DB_NAME", "postgres")
+elif DB_TYPE == "mysql":
+    DB_ENGINE = "django.db.backends.mysql"
+    DB_NAME = getenv("DB_NAME", "mysql")
+else:
+    DB_ENGINE = "django.db.backends.sqlite3"
+    DB_NAME = str(BASE_DIR / "db.sqlite3")
+
+DB_SETTINGS = {
+    "NAME": DB_NAME,
+    "ENGINE": DB_ENGINE,
+    "USER": getenv("DB_USERNAME", ""),
+    "PASSWORD": getenv("DB_PASSWORD", ""),
+    "HOST": getenv("DB_ADDR", ""),
+}
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    "default": DB_SETTINGS,
 }
 
 
