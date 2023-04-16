@@ -22,10 +22,12 @@ class DemandAdmin(admin.ModelAdmin):
             return ""
         return render_to_string('facereco/force_face_encode_button.html', {'demand': obj})
 
+    rerunEncoding_button.short_description = 'Rerun face encoding'
+
     search_fields = ('id', 'name', 'first_name', 'email', 'directory__name')
 
     list_display = ('name', 'first_name', 'email', 'directory', 'processing_status', 'date')
-    readonly_fields = ('id', 'date', 'request_token', 'face_encoding', 'search_task_id',)
+    readonly_fields = ('id', 'date', 'request_token', 'face_encoding', 'search_task_id', 'rerunEncoding_button')
     list_filter = ('processing_status', 'directory')
 
     actions = [reset_demand_search]
