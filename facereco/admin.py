@@ -14,12 +14,14 @@ def reset_demand_search(self, request, queryset):
 @admin.register(Demand)
 class DemandAdmin(admin.ModelAdmin):
     def rerunEncoding_button(self, obj):
-        if self.obj.id is None:
+
+        if obj.id is None:
             return ""
-        if self.obj.photo is None:
+        if obj.photo is None:
             return "No photo to encode"
-        if self.obj.processing_status != Demand.NOT_PROCESSED or self.obj.processing_status != Demand.NO_FACE_FOUND:
+        if obj.processing_status != Demand.NOT_PROCESSED and obj.processing_status != Demand.NO_FACE_FOUND:
             return "Photo already processed"
+
         return render_to_string('facereco/force_face_encode_button.html', {'demand': obj})
 
     rerunEncoding_button.short_description = 'Rerun face encoding'
