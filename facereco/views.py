@@ -91,4 +91,15 @@ def forceSearching(request, directory_id):
     return JsonResponse({'status': 'STARTED', 'message': 'Search started'})
 
 
+@staff_member_required
+def rerunFaceEncoding(request, demand_id):
+    demand = get_object_or_404(Demand, pk=demand_id)
+    if demand.photo is None:
+        return JsonResponse({'status': 'ERROR', 'message': 'Demand has no photo'})
+
+    encode_demand_photo.apply_async(args=[demand_id])
+
+    return JsonResponse({'status': 'STARTED', 'message': 'Encoding started'})
+
+
 

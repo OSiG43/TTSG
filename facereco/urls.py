@@ -8,4 +8,5 @@ urlpatterns = [
     path("indexing/<int:directory_id>/", views.indexingDirectory, name="indexingDirectory"),
     path("indexing/<int:directory_id>/progress/", views.indexingDirectoryProgress, name="indexingDirectoryProgress"),
     path("forceSearching/<int:directory_id>/", views.forceSearching, name="forceSearching"),
+    path("rerunFaceEncoding/<int:demand_id>/", views.rerunFaceEncoding, name="rerunFaceEncoding")
 ]

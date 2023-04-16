@@ -1,0 +1,65 @@
+<style>
+    .force-face-encode-action {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .force_encoding_error {
+        color:red;
+        margin: 0;
+        font-size: 1.3em;
+        display: none;
+    }
+
+
+</style>
+<div class="force-face-encode-action">
+
+        <span class="force_encoding_error" id="force_encoding_error_{{demand.id}}" >Error !</span>
+
+        <button
+                class="button"
+                onclick="forceEncode_{{demand.id}}(event)"
+                {% if demand.id is None %} disabled {% endif %}
+        >
+            Forcer la recherche
+        </button>
+
+</div>
+
+<!-- Si on est dans un ajout alors demand.id est none. pas d'indexation possible -->
+{% if demand.id is not None %}
+    <script>
+
+        // Fonction qui lance la recherche des photos du répertoire
+        function forceEncode_{{demand.id}}(event) {
+            event.preventDefault();
+
+            document.getElementById('force_encoding_error_{{demand.id}}').style.display = 'none';
+
+
+            const xhttp = new XMLHttpRequest();
+
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    const response = JSON.parse(this.responseText);
+                    if (response.status == "STARTED"){
+                        event.target.style.display = 'none';
+                        location.reload();
+                    } else if (response.status == "ERROR"){
+                        document.getElementById('force_encoding_error_{{demand.id}}').style.display = 'block';
+                        document.getElementById('force_encoding_error_{{demand.id}}').innerHTML = "Erreur";
+                    }
+
+                }
+            };
+
+            xhttp.open("GET", "{% url 'rerunFaceEncoding' demand_id=demand.id %}", true);
+            xhttp.send();
+        }
+
+
+    </script>
+{% endif %}
