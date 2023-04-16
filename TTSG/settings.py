@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+import os
 from os import getenv
 from pathlib import Path
 
@@ -36,6 +37,8 @@ BASE_URL = getenv("BASE_URL", "http://localhost:8000")
 ALLOWED_HOSTS = ["*"]
 URL_CSRF = getenv("URL_CSRF", "")
 CSRF_TRUSTED_ORIGINS = [URL_CSRF]
+
+
 
 
 # Application definition
@@ -127,6 +130,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
+
+
+if not DEBUG:
+    STATIC_ROOT = BASE_DIR / "static"
+else:
+    STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
