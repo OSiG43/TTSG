@@ -52,7 +52,8 @@ def encode_demand_photo(demand_id):
     if settings.WITH_FACE_RECOGNITION:
         photo = face_recognition.api.load_image_file(demand.photo.path)
         face_locations = face_recognition.face_locations(photo)
-        face_encodings = face_recognition.face_encodings(photo, face_locations)
+        face_encodings = face_recognition.face_encodings(photo, face_locations, num_jitters=settings.NUM_JITTERS,
+                                                         model=settings.FACE_RECOGNITION_MODEL)
         if len(face_encodings) == 0:
             demand.processing_status = Demand.NO_FACE_FOUND
             demand.save()
@@ -230,7 +231,8 @@ def task_face_encoding(self, dir_id, img_path):
 
             # On encode les visages
             face_locations = face_recognition.face_locations(frame)
-            face_encodings = face_recognition.face_encodings(frame, face_locations)
+            face_encodings = face_recognition.face_encodings(frame, face_locations, num_jitters=settings.NUM_JITTERS,
+                                                             model=settings.FACE_RECOGNITION_MODEL)
 
             # On transforme les tableaux numpy en list python pour pouvoir les encoder en JSON.
             face_encodings_list = []
